@@ -1,4 +1,5 @@
 # BudgetPal
+<<<<<<< HEAD
 
 A full stack expense tracker built with Flask and Chart.js to help students manage spending easily.
 
@@ -14,3 +15,6 @@ A full stack expense tracker built with Flask and Chart.js to help students mana
 - View spending history
 - Generate charts
 - Mobile-friendly
+=======
+Simple Flask-based expense tracker
+>>>>>>> 706b36744c075f3e2e000d3aeae0f3215645ea09
