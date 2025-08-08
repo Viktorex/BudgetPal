@@ -38,6 +38,7 @@ def index():
         amount = request.form['amount']
         date = request.form['date']
 
+        # Validation
         if not name or not amount or not date:
             flash("Please fill all fields.", "danger")
         elif float(amount) < 0:
@@ -53,7 +54,12 @@ def index():
     conn.close()
 
     total = sum([expense[2] for expense in expenses])
-    return render_template('index.html', expenses=expenses, total=total)
+
+    # Prepare data for chart
+    labels = [expense[1] for expense in expenses]  # expense names
+    amounts = [expense[2] for expense in expenses]  # amounts
+
+    return render_template('index.html', expenses=expenses, total=total, labels=labels, amounts=amounts)
 
 
 @app.route('/delete/<int:id>')
@@ -65,32 +71,6 @@ def delete_expense(id):
     conn.close()
     flash("🗑️ Expense deleted!", "info")
     return redirect(url_for('index'))
-
-
-@app.route('/edit/<int:id>', methods=['GET', 'POST'])
-def edit_expense(id):
-    conn = sqlite3.connect('expenses.db')
-    c = conn.cursor()
-
-    if request.method == 'POST':
-        name = request.form['name']
-        amount = request.form['amount']
-        date = request.form['date']
-
-        if not name or not amount or not date:
-            flash("Please fill all fields.", "danger")
-        else:
-            c.execute("UPDATE expenses SET name=?, amount=?, date=? WHERE id=?", (name, amount, date, id))
-            conn.commit()
-            conn.close()
-            flash("✏️ Expense updated successfully!", "success")
-            return redirect(url_for('index'))
-
-    c.execute("SELECT * FROM expenses WHERE id=?", (id,))
-    expense = c.fetchone()
-    conn.close()
-    return render_template('edit.html', expense=expense)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
