@@ -3,7 +3,7 @@ services:
     name: budgetpal
     env: python
     region: frankfurt
-    pythonVersion: 3.11.8 
+    pythonVersion: 3.11.8
     buildCommand: "pip install -r requirements.txt"
     startCommand: "gunicorn app:app"
     plan: free
